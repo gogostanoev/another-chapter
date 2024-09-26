@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  name String?
+  lastName String?
+  age Int?
+  games Game[] // one to many vrska, eden korisnik mozhe da ima poveke games
+}
+
+model Game {
+  id Int @id @default(autoincrement())
+  genre String
+  price Int
+  player User @relation(fields: [playerId], references: [id]) // a sekoja igra pripagja samo na eden korisnik
+  playerId Int // foreign key => ova pole ja povrzuva datata od edna tabela so datata od druga tabela => Game e svrzano za User
+  // playerId refers to a User, pravi vrska pomegju ovie 2 tabeli
+}
